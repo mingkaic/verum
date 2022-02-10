@@ -1,0 +1,15 @@
+licenses(["notice"])
+
+package(
+    default_visibility = ["//visibility:public"],
+)
+
+######### DEVELOPER TOOLS ########
+
+load("@com_grail_bazel_compdb//:aspects.bzl", "compilation_database")
+compilation_database(
+    name = "compdb",
+    targets = [
+		"//exam:exam",
+    ],
+)

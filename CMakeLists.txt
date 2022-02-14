@@ -35,15 +35,18 @@ set(_GRPC_CPP_PLUGIN_EXECUTABLE $<TARGET_FILE:gRPC::grpc_cpp_plugin>)
 get_filename_component(MUTA_PROTO "muta/mutation.proto" ABSOLUTE)
 set(MUTA_PROTO_SRCS "${CMAKE_CURRENT_BINARY_DIR}/muta/mutation.pb.cc")
 set(MUTA_PROTO_HDRS "${CMAKE_CURRENT_BINARY_DIR}/muta/mutation.pb.h")
+set(MUTA_GRPC_SRCS "${CMAKE_CURRENT_BINARY_DIR}/muta/mutation.grpc.pb.cc")
+set(MUTA_GRPC_HDRS "${CMAKE_CURRENT_BINARY_DIR}/muta/mutation.grpc.pb.h")
 add_custom_command(
-    OUTPUT "${MUTA_PROTO_SRCS}" "${MUTA_PROTO_HDRS}"
+    OUTPUT "${MUTA_PROTO_SRCS}" "${MUTA_PROTO_HDRS}" "${MUTA_GRPC_SRCS}" "${MUTA_GRPC_HDRS}"
     COMMAND ${_PROTOBUF_PROTOC}
-    ARGS --cpp_out "${CMAKE_CURRENT_BINARY_DIR}"
+    ARGS --grpc_out "${CMAKE_CURRENT_BINARY_DIR}"
+        --cpp_out "${CMAKE_CURRENT_BINARY_DIR}"
         -I "${CMAKE_CURRENT_SOURCE_DIR}"
         "${MUTA_PROTO}"
     DEPENDS "${MUTA_PROTO}"
 )
-add_library(muta_proto_obj OBJECT ${MUTA_PROTO_SRCS})
+add_library(muta_proto_obj OBJECT ${MUTA_PROTO_SRCS} ${MUTA_GRPC_SRCS})
 
 # Include generated *.pb.h files
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")

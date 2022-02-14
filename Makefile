@@ -4,8 +4,8 @@
 TMP_COVFILE := /tmp/coverage.info
 COVERAGE_INFO_FILE := bazel-out/_coverage/_coverage_report.dat
 CCOVER := bazel coverage --config asan --action_env="ASAN_OPTIONS=detect_leaks=0" --config gtest --config cc_coverage
-COVERAGE_CTX := tmp/cppkg_coverage
-CONVERSION_CSV := tmp/cppkg_conversions.csv
+COVERAGE_CTX := tmp/verum_coverage
+CONVERSION_CSV := tmp/verum_conversions.csv
 
 .PHONY: cov_clean
 cov_clean:
@@ -74,7 +74,7 @@ conan_create:
 
 .PHONY: conan_upload
 conan_upload:
-	conan upload cppkg/${VERSION}@mingkaic-co/stable --all --remote mingkaic-co
+	conan upload verum/${VERSION}@mingkaic-co/stable --all --remote mingkaic-co
 
 .PHONY: conan_create_n_upload
 conan_create_n_upload: conan_install conan_create conan_upload

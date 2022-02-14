@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
-option(PACKAGE_TESTS "Build the tests" OFF)
+option(PACKAGE_TESTS "Build the tests" ON)
 
 set(verum_INSTALL_default ON)
 if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
@@ -118,14 +118,16 @@ endif()
 
 if(PACKAGE_TESTS)
     enable_testing()
-
-    set(EXAM_TEST exam_test)
-    add_executable(${EXAM_TEST} exam/test/main.cpp)
-    target_link_libraries(${EXAM_TEST} exam)
-    add_test(NAME ${EXAM_TEST} COMMAND ${EXAM_TEST})
-
-    set(MUTA_TEST muta_test)
-    add_executable(${MUTA_TEST} muta/test/main.cpp)
-    target_link_libraries(${MUTA_TEST} muta)
-    add_test(NAME ${MUTA_TEST} COMMAND ${MUTA_TEST})
 endif()
+
+# exam
+set(EXAM_TEST exam_test)
+add_executable(${EXAM_TEST} exam/test/main.cpp)
+target_link_libraries(${EXAM_TEST} exam)
+add_test(NAME ${EXAM_TEST} COMMAND ${EXAM_TEST})
+
+# muta
+set(MUTA_TEST muta_test)
+add_executable(${MUTA_TEST} muta/test/main.cpp)
+target_link_libraries(${MUTA_TEST} muta)
+add_test(NAME ${MUTA_TEST} COMMAND ${MUTA_TEST})

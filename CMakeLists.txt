@@ -4,6 +4,8 @@ project(verum C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 option(PACKAGE_TESTS "Build the tests" OFF)
 
@@ -17,12 +19,27 @@ set(verum_INSTALL_LIBDIR "lib" CACHE STRING "Installation directory for librarie
 set(verum_INSTALL_INCLUDEDIR "include" CACHE STRING "Installation directory for headers")
 set(verum_INSTALL_CMAKEDIR "lib/cmake/${PACKAGE_NAME}" CACHE STRING "Installation directory for cmake config files")
 
+set(verum_OPTIMIZE ON CACHE BOOL "Optimize verum libraries")
+
 #### third_parties ####
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
 find_package(gRPC CONFIG REQUIRED)
+
+#### set optimization options after potential third party overrides ####
+
+if(tenncor_OPTIMIZE)
+    message(STATUS "compiler option: ${CMAKE_CXX_COMPILER_ID}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -O3")
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -openmp")
+    else()
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+	add_link_options(-lgomp)
+    endif()
+endif()
 
 #### generate proto files ####
 
@@ -43,6 +60,7 @@ add_custom_command(
     ARGS --grpc_out "${CMAKE_CURRENT_BINARY_DIR}"
         --cpp_out "${CMAKE_CURRENT_BINARY_DIR}"
         -I "${CMAKE_CURRENT_SOURCE_DIR}"
+		--plugin=protoc-gen-grpc="${_GRPC_CPP_PLUGIN_EXECUTABLE}"
         "${MUTA_PROTO}"
     DEPENDS "${MUTA_PROTO}"
 )

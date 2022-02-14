@@ -66,6 +66,7 @@ cc_grpc_library(
 	srcs = [":muta_pb"],
 	grpc_only = True,
 	deps = [":muta_cc_pb"],
+    visibility = ["//visibility:public"],
 )
 
 ######### TEST #########

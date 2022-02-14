@@ -171,6 +171,8 @@ struct Mutator : public ::testing::Test
 
 	static FailCheckerF fail_checker_;
 
+	static RandomGenerator generator_;
+
 	virtual ~Mutator (void)
 	{
 		save_sessions(exit_saver_);
@@ -312,8 +314,6 @@ private:
 	}
 
 	std::list<PbMutSessT> sessions_;
-
-	RandomGenerator generator_;
 };
 
 }

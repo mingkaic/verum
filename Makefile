@@ -58,6 +58,7 @@ conan_remote:
 	conan remote add mingkaic-co "https://gitlab.com/api/v4/projects/23299689/packages/conan"
 
 build/conanbuildinfo.cmake:
+	-conan install -r mingkaic-co -if build .
 	conan install -if build .
 
 .PHONY: conan_install
@@ -76,7 +77,7 @@ conan_upload:
 	conan upload cppkg/${VERSION}@mingkaic-co/stable --all --remote mingkaic-co
 
 .PHONY: conan_create_n_upload
-conan_create_n_upload: conan_create conan_upload
+conan_create_n_upload: conan_install conan_create conan_upload
 
 #### compile db
 

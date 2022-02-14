@@ -22,6 +22,8 @@ set(verum_INSTALL_CMAKEDIR "lib/cmake/${PACKAGE_NAME}" CACHE STRING "Installatio
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
+find_package(gRPC CONFIG REQUIRED)
+
 #### generate proto files ####
 
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")

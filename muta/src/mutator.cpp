@@ -29,6 +29,8 @@ SessSaveF Mutator::exit_saver_ = grpc_upload;
 
 FailCheckerF Mutator::fail_checker_ = gtest_fail;
 
+RandomGenerator Mutator::generator_;
+
 }
 
 #endif

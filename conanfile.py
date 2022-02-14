@@ -19,7 +19,7 @@ class VerumConan(ConanFile):
     requires = (
         "cisab/0.1.0@mingkaic-co/stable",
         "gtest/1.11.0",
-        "grpc/1.29.1@inexorgame/stable"
+        "grpc/1.43.0"
     )
     generators = "cmake", "cmake_find_package_multi"
 

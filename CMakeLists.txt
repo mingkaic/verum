@@ -5,7 +5,7 @@ project(verum C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-option(PACKAGE_TESTS "Build the tests" ON)
+option(PACKAGE_TESTS "Build the tests" OFF)
 
 set(verum_INSTALL_default ON)
 if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
@@ -22,6 +22,30 @@ set(verum_INSTALL_CMAKEDIR "lib/cmake/${PACKAGE_NAME}" CACHE STRING "Installatio
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
+#### generate proto files ####
+
+include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+
+find_program(_PROTOBUF_PROTOC protoc ${CONAN_BIN_DIRS_PROTOBUF} NO_DEFAULT_PATH)
+set(_GRPC_CPP_PLUGIN_EXECUTABLE $<TARGET_FILE:gRPC::grpc_cpp_plugin>)
+
+# muta
+get_filename_component(MUTA_PROTO "muta/mutation.proto" ABSOLUTE)
+set(MUTA_PROTO_SRCS "${CMAKE_CURRENT_BINARY_DIR}/muta/mutation.pb.cc")
+set(MUTA_PROTO_HDRS "${CMAKE_CURRENT_BINARY_DIR}/muta/mutation.pb.h")
+add_custom_command(
+    OUTPUT "${MUTA_PROTO_SRCS}" "${MUTA_PROTO_HDRS}"
+    COMMAND ${_PROTOBUF_PROTOC}
+    ARGS --cpp_out "${CMAKE_CURRENT_BINARY_DIR}"
+        -I "${CMAKE_CURRENT_SOURCE_DIR}"
+        "${MUTA_PROTO}"
+    DEPENDS "${MUTA_PROTO}"
+)
+add_library(muta_proto_obj OBJECT ${MUTA_PROTO_SRCS})
+
+# Include generated *.pb.h files
+include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+
 #### local libraries ####
 
 include_directories(
@@ -32,6 +56,15 @@ include_directories(
 # exam
 add_library(exam INTERFACE)
 target_link_libraries(exam INTERFACE ${CONAN_LIBS_CISAB} ${CONAN_LIBS_GTEST})
+
+# muta
+add_library(muta
+    muta/src/mutator.cpp
+    muta/src/random_generator.cpp
+    $<TARGET_OBJECTS:muta_proto_obj>
+)
+target_link_libraries(muta PUBLIC
+    ${CONAN_LIBS_CISAB} ${CONAN_LIBS_GTEST} gRPC::grpc++ gRPC::grpc++_unsecure)
 
 #### install ####
 if(verum_INSTALL)
@@ -62,10 +95,14 @@ endif()
 
 if(PACKAGE_TESTS)
     enable_testing()
-endif()
 
-# exam
-set(EXAM_TEST exam_test)
-add_executable(${EXAM_TEST} exam/test/main.cpp)
-target_link_libraries(${EXAM_TEST} exam)
-add_test(NAME ${EXAM_TEST} COMMAND ${EXAM_TEST})
+    set(EXAM_TEST exam_test)
+    add_executable(${EXAM_TEST} exam/test/main.cpp)
+    target_link_libraries(${EXAM_TEST} exam)
+    add_test(NAME ${EXAM_TEST} COMMAND ${EXAM_TEST})
+
+    set(MUTA_TEST muta_test)
+    add_executable(${MUTA_TEST} muta/test/main.cpp)
+    target_link_libraries(${MUTA_TEST} muta)
+    add_test(NAME ${MUTA_TEST} COMMAND ${MUTA_TEST})
+endif()

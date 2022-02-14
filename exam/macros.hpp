@@ -104,12 +104,12 @@ inline bool vector_close (IT lbegin, IT lend, IT rbegin,
 		"expect list " << fmts::readable(VEC) <<\
 		", got " << fmts::readable(VEC2) << " instead"; }
 #define _ARRCLOSE(ARR, ARR2, EPS, GBOOL) {\
-	GBOOL(::exam::vector_close(ARR.begin(), ARR.end(), ARR2.begin(), abs_close(EPS))) <<\
+	GBOOL(::exam::vector_close(ARR.begin(), ARR.end(), ARR2.begin(), ::exam::abs_close(EPS))) <<\
 		"expect list " << fmts::readable(ARR) <<\
 		", got " << fmts::readable(ARR2) << " instead"; }
 #define _VECCLOSE(VEC, VEC2, EPS, GBOOL) {\
 	GBOOL(VEC.size() == VEC2.size() &&\
-		::exam::vector_close(VEC.begin(), VEC.end(), VEC2.begin(), abs_close(EPS))) <<\
+		::exam::vector_close(VEC.begin(), VEC.end(), VEC2.begin(), ::exam::abs_close(EPS))) <<\
 		"expect list " << fmts::readable(VEC) <<\
 		", got " << fmts::readable(VEC2) << " instead"; }
 #define _INSET(SET, CONTENT, GBOOL, PREFIX_MSG) {\
@@ -132,15 +132,15 @@ inline bool vector_close (IT lbegin, IT lend, IT rbegin,
 #define ASSERT_VECNEQ(VEC, VEC2) _VECCHECK(VEC, VEC2, ASSERT_FALSE)
 #define EXPECT_VECNEQ(VEC, VEC2) _VECCHECK(VEC, VEC2, EXPECT_FALSE)
 
-#define ASSERT_ARRCLOSE(ARR, ARR2) _ARRCLOSE(ARR, ARR2, ASSERT_TRUE)
-#define EXPECT_ARRCLOSE(ARR, ARR2) _ARRCLOSE(ARR, ARR2, EXPECT_TRUE)
-#define ASSERT_ARRNCLOSE(ARR, ARR2) _ARRCLOSE(ARR, ARR2, ASSERT_FALSE)
-#define EXPECT_ARRNCLOSE(ARR, ARR2) _ARRCLOSE(ARR, ARR2, EXPECT_FALSE)
+#define ASSERT_ARRCLOSE(ARR, ARR2, EPS) _ARRCLOSE(ARR, ARR2, EPS, ASSERT_TRUE)
+#define EXPECT_ARRCLOSE(ARR, ARR2, EPS) _ARRCLOSE(ARR, ARR2, EPS, EXPECT_TRUE)
+#define ASSERT_ARRNCLOSE(ARR, ARR2, EPS) _ARRCLOSE(ARR, ARR2, EPS, ASSERT_FALSE)
+#define EXPECT_ARRNCLOSE(ARR, ARR2, EPS) _ARRCLOSE(ARR, ARR2, EPS, EXPECT_FALSE)
 
-#define ASSERT_VECCLOSE(VEC, VEC2) _VECCLOSE(VEC, VEC2, ASSERT_TRUE)
-#define EXPECT_VECCLOSE(VEC, VEC2) _VECCLOSE(VEC, VEC2, EXPECT_TRUE)
-#define ASSERT_VECNCLOSE(VEC, VEC2) _VECCLOSE(VEC, VEC2, ASSERT_FALSE)
-#define EXPECT_VECNCLOSE(VEC, VEC2) _VECCLOSE(VEC, VEC2, EXPECT_FALSE)
+#define ASSERT_VECCLOSE(VEC, VEC2, EPS) _VECCLOSE(VEC, VEC2, EPS, ASSERT_TRUE)
+#define EXPECT_VECCLOSE(VEC, VEC2, EPS) _VECCLOSE(VEC, VEC2, EPS, EXPECT_TRUE)
+#define ASSERT_VECNCLOSE(VEC, VEC2, EPS) _VECCLOSE(VEC, VEC2, EPS, ASSERT_FALSE)
+#define EXPECT_VECNCLOSE(VEC, VEC2, EPS) _VECCLOSE(VEC, VEC2, EPS, EXPECT_FALSE)
 
 #define ASSERT_HAS(SET, KEY) _INSET(SET, KEY, ASSERT_TRUE, "expecting to")
 #define EXPECT_HAS(SET, KEY) _INSET(SET, KEY, EXPECT_TRUE, "expecting to")

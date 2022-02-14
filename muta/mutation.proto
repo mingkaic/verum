@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package muta;
+
+enum EntryType {
+	UNSET = 0;
+	INT = 1;
+	DOUBLE = 2;
+	STRING = 3;
+}
+
+message MutatorEntry {
+	EntryType type = 1;
+
+	repeated double ds = 2;
+
+	repeated int64 is = 3;
+
+	repeated string ss = 4;
+}
+
+message MutatorSession {
+	string id = 1;
+
+	map<string,MutatorEntry> entries = 2;
+
+	google.protobuf.Timestamp created = 3;
+}
+
+message SaveSessionsRequest {
+	repeated MutatorSession sessions = 1;
+}
+
+message SaveSessionsResponse {}
+
+service MutationErrorStorage {
+    rpc SaveSessions (SaveSessionsRequest) returns (SaveSessionsResponse);
+}

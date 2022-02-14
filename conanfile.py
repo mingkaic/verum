@@ -18,7 +18,8 @@ class VerumConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     requires = (
         "cisab/0.1.0@mingkaic-co/stable",
-        "gtest/1.10.0",
+        "gtest/1.11.0",
+        "grpc/1.29.1@inexorgame/stable"
     )
     generators = "cmake", "cmake_find_package_multi"
 
@@ -35,6 +36,13 @@ class VerumConan(ConanFile):
         cmake.configure()
         return cmake
 
+    def configure(self):
+        if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
+            del self.options.fPIC
+            compiler_version = tools.Version(self.settings.compiler.version)
+            if compiler_version < 14:
+                raise ConanInvalidConfiguration("gRPC can only be built with Visual Studio 2015 or higher.")
+
     def source(self):
         self.run("git clone {}.git .".format(self.url))
 
@@ -50,4 +58,4 @@ class VerumConan(ConanFile):
     def package_info(self):
         self.cpp_info.names["cmake_find_package"] = self.name
         self.cpp_info.names["cmake_find_package_multi"] = self.name
-        self.cpp_info.libs = ["diff", "egrpc", "error", "estd", "flag", "fmts", "logs"]
+        self.cpp_info.libs = ["exam", "muta"]

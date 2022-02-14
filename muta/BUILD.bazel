@@ -1,0 +1,83 @@
+licenses(["notice"])
+
+load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
+
+filegroup(
+    name = "srcs",
+    srcs = [
+        ":muta_hdrs",
+        ":test_srcs",
+        "BUILD.bazel",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "muta_hdrs",
+    srcs = glob(["*.hpp"]),
+)
+
+filegroup(
+    name = "muta_srcs",
+    srcs = glob(["src/*.cpp"]),
+)
+
+filegroup(
+    name = "protos",
+    srcs = glob(["*.proto"]),
+)
+
+filegroup(
+    name = "test_srcs",
+    srcs = glob(["test/*.cpp"]),
+)
+
+######### LIBRARY #########
+
+cc_library(
+    name = "muta",
+    hdrs = [":muta_hdrs"],
+    srcs = [":muta_srcs"],
+    copts = ["-std=c++17"],
+    deps = [
+		":muta_cc_grpc",
+		"@com_github_mingkaic_cisab//logs:logs",
+        "@com_github_grpc_grpc//:grpc++",
+		"@gtest//:gtest",
+	],
+    visibility = ["//visibility:public"],
+)
+
+proto_library(
+    name = "muta_pb",
+    srcs = [":protos"],
+    deps = ["@com_google_protobuf//:timestamp_proto"],
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "muta_cc_pb",
+    deps = [":muta_pb"],
+    visibility = ["//visibility:public"],
+)
+
+cc_grpc_library(
+	name = "muta_cc_grpc",
+	srcs = [":muta_pb"],
+	grpc_only = True,
+	deps = [":muta_cc_pb"],
+)
+
+######### TEST #########
+
+cc_test(
+    name = "test",
+    size = "small",
+    srcs = [":test_srcs"],
+    deps = [
+        ":muta",
+		"//exam:exam",
+    ],
+    linkstatic = True,
+    copts = ["-std=c++17"],
+)

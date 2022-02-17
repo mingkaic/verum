@@ -290,8 +290,8 @@ struct Mutator : public ::testing::Test
 			grpc::Status status = uploader(request);
 			if (false == status.ok())
 			{
-				logs::fatalf("failed to save session to %s: %s",
-					MUTATOR_STORAGE_HOST.c_str(), status.error_message().c_str());
+				logs::fatalf("failed to save session to %s: [%d] '%s'",
+					MUTATOR_STORAGE_HOST.c_str(), status.error_code(), status.error_message().c_str());
 			}
 			else
 			{

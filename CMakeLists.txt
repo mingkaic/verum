@@ -37,7 +37,7 @@ if(tenncor_OPTIMIZE)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -openmp")
     else()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
-	add_link_options(-lgomp)
+		add_link_options(-lgomp)
     endif()
 endif()
 
@@ -60,7 +60,7 @@ add_custom_command(
     ARGS --grpc_out "${CMAKE_CURRENT_BINARY_DIR}"
         --cpp_out "${CMAKE_CURRENT_BINARY_DIR}"
         -I "${CMAKE_CURRENT_SOURCE_DIR}"
-		--plugin=protoc-gen-grpc="${_GRPC_CPP_PLUGIN_EXECUTABLE}"
+        --plugin=protoc-gen-grpc="${_GRPC_CPP_PLUGIN_EXECUTABLE}"
         "${MUTA_PROTO}"
     DEPENDS "${MUTA_PROTO}"
 )
@@ -93,8 +93,14 @@ target_link_libraries(muta PUBLIC
 if(verum_INSTALL)
     foreach(_HDR
         exam/exam.hpp
+        exam/macros.hpp
         exam/mock_log.hpp
         exam/nosupport_log.hpp
+        muta/igenerator.hpp
+        muta/mutator.hpp
+        muta/mutator_generator.hpp
+        muta/random.hpp
+        muta/random_generator.hpp
     )
         get_filename_component(_PATH ${_HDR} PATH)
         install(FILES ${_HDR} DESTINATION "${verum_INSTALL_INCLUDEDIR}/${_PATH}")
@@ -103,6 +109,7 @@ if(verum_INSTALL)
     set(TargetFile ${PROJECT_NAME}Targets)
     install(TARGETS
         exam
+        muta
         EXPORT ${TargetFile}
         RUNTIME DESTINATION ${verum_INSTALL_BINDIR}
         LIBRARY DESTINATION ${verum_INSTALL_LIBDIR}

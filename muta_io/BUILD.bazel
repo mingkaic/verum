@@ -1,0 +1,14 @@
+licenses(["notice"])
+
+######### SERVER #########
+
+cc_binary(
+	name = "session_printer",
+	srcs = ["server.cpp"],
+	copts = ["-std=c++17"],
+	deps = [
+		"//muta:muta_cc_grpc",
+		"@com_github_grpc_grpc//:grpc++",
+	],
+    visibility = ["//visibility:public"],
+)

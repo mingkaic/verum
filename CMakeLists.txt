@@ -37,7 +37,7 @@ if(tenncor_OPTIMIZE)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -openmp")
     else()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
-		add_link_options(-lgomp)
+        add_link_options(-lgomp)
     endif()
 endif()
 
@@ -86,8 +86,7 @@ add_library(muta
     muta/src/random_generator.cpp
     $<TARGET_OBJECTS:muta_proto_obj>
 )
-target_link_libraries(muta PUBLIC
-    ${CONAN_LIBS_CISAB} ${CONAN_LIBS_GTEST} gRPC::grpc++ gRPC::grpc++_unsecure)
+target_link_libraries(muta PUBLIC ${CONAN_LIBS_CISAB} ${CONAN_LIBS_GTEST} gRPC::grpc++ gRPC::grpc++_unsecure)
 
 #### install ####
 if(verum_INSTALL)

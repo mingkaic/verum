@@ -40,24 +40,21 @@ struct ProtobufMutatorEntry final : public iMutatorEntry
 
 	void save (const std::string& s) override
 	{
-		auto type = entry_->type();
-		assert(type == EntryType::UNSET || type == EntryType::STRING);
+		assert(entry_->type() == EntryType::UNSET || entry_->type() == EntryType::STRING);
 		entry_->set_type(EntryType::STRING);
 		entry_->add_ss(s);
 	}
 
 	void save (const int64_t& i) override
 	{
-		auto type = entry_->type();
-		assert(type == EntryType::UNSET || type == EntryType::INT);
+		assert(entry_->type() == EntryType::UNSET || entry_->type() == EntryType::INT);
 		entry_->set_type(EntryType::INT);
 		entry_->add_is(i);
 	}
 
 	void save (const double& d) override
 	{
-		auto type = entry_->type();
-		assert(type == EntryType::UNSET || type == EntryType::DOUBLE);
+		assert(entry_->type() == EntryType::UNSET || entry_->type() == EntryType::DOUBLE);
 		entry_->set_type(EntryType::DOUBLE);
 		entry_->add_ds(d);
 	}

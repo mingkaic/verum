@@ -54,7 +54,6 @@ VERSION := $(shell cat VERSION)
 
 .PHONY: conan_remote
 conan_remote:
-	conan remote add inexorgame "https://api.bintray.com/conan/inexorgame/inexor-conan"
 	conan remote add mingkaic-co "https://gitlab.com/api/v4/projects/23299689/packages/conan"
 
 build/conanbuildinfo.cmake:
@@ -79,14 +78,14 @@ conan_upload:
 .PHONY: conan_create_n_upload
 conan_create_n_upload: conan_install conan_create conan_upload
 
-#### compile db
+#### compile db (uncomment to generate)
 
-EXEC_ROOT := $(shell bazel info execution_root)
+#EXEC_ROOT := $(shell bazel info execution_root)
 
-COMP_FILE := $(shell bazel info bazel-bin)/compile_commands.json
+#COMP_FILE := $(shell bazel info bazel-bin)/compile_commands.json
 
-.PHONY: compdb
-compdb:
-	bazel build //:compdb
-	sed -i.bak "s@__EXEC_ROOT__@${EXEC_ROOT}@" "${COMP_FILE}"
-	ln -s "${COMP_FILE}" compile_commands.json
+#.PHONY: compdb
+#compdb:
+	#bazel build //:compdb
+	#sed -i.bak "s@__EXEC_ROOT__@${EXEC_ROOT}@" "${COMP_FILE}"
+	#ln -s "${COMP_FILE}" compile_commands.json

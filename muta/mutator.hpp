@@ -297,7 +297,7 @@ struct Mutator : public ::testing::Test
 		}
 	}
 
-private:
+protected:
 	void entry_session (const std::string& id, std::function<void(MutatorGenerator&)> f)
 	{
 		MutatorGenerator mgen(generator_, make_entry(id));
@@ -310,6 +310,7 @@ private:
 		return sessions_.back()->add_entry(id);
 	}
 
+private:
 	std::list<PbMutSessT> sessions_;
 };
 

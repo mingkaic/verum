@@ -37,6 +37,20 @@ struct TestException final : public std::exception
 };
 
 template <typename T>
+inline bool canmatch (const T& l, const T& r)
+{
+	if (std::isinf(l) && std::isinf(r))
+	{
+		return false;
+	}
+	if (std::isnan(l) && std::isnan(r))
+	{
+		return false;
+	}
+	return true;
+}
+
+template <typename T>
 inline T absolute_error (const T& l, const T& r)
 {
 	return std::abs(l - r);
@@ -69,16 +83,38 @@ inline ClosenessF<T> abs_close (T epsilon)
 {
 	return [epsilon](const T& l, const T& r)
 	{
-		return absolute_error(l, r) <= epsilon;
+		if (canmatch(l, r))
+		{
+			return absolute_error(l, r) <= epsilon;
+		}
+		return true;
 	};
 }
 
 template <typename T>
-inline ClosenessF<T> rel_err (T thresh)
+inline ClosenessF<T> rel_close (T thresh)
 {
 	return [thresh](const T& l, const T& r)
 	{
-		return relative_error(l, r) <= thresh;
+		if (canmatch(l, r))
+		{
+			return relative_error(l, r) <= thresh;
+		}
+		return true;
+	};
+}
+
+// takes the best of absolute and relative error
+template <typename T>
+inline ClosenessF<T> bestcase_close (T thresh)
+{
+	return [thresh](const T& l, const T& r)
+	{
+		if (canmatch(l, r))
+		{
+			return std::min(relative_error(l, r), absolute_error(l, r)) <= thresh;
+		}
+		return true;
 	};
 }
 

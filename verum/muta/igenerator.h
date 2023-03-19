@@ -1,8 +1,11 @@
-#ifndef PKG_MUTA_IGENERATOR_HPP
-#define PKG_MUTA_IGENERATOR_HPP
+#ifndef VERUM_MUTA_IGENERATOR_HPP
+#define VERUM_MUTA_IGENERATOR_HPP
 
 #include <functional>
 #include <string>
+
+namespace verum
+{
 
 namespace muta
 {
@@ -42,4 +45,6 @@ struct iGenerator
 
 }
 
-#endif // PKG_MUTA_IGENERATOR_HPP
+}
+
+#endif // VERUM_MUTA_IGENERATOR_HPP

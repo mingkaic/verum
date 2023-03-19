@@ -6,20 +6,24 @@
 /// Define test utility macros
 ///
 
-#ifndef PKG_EXAM_MACROS_HPP
-#define PKG_EXAM_MACROS_HPP
+#ifndef VERUM_EXAM_MACROS_HPP
+#define VERUM_EXAM_MACROS_HPP
 
 #include <limits>
 #include <type_traits>
 
 #include "gtest/gtest.h"
 
-#include "fmts/fmts.hpp"
+#include "cisab/fmts/format.h"
 
-#include "types/types.hpp"
+#include "cisab/types/iterator.h"
+#include "cisab/types/math.h"
 
-#include "exam/mock_log.hpp"
-#include "exam/nosupport_log.hpp"
+#include "verum/exam/mock_log.h"
+#include "verum/exam/nosupport_log.h"
+
+namespace verum
+{
 
 namespace exam
 {
@@ -56,7 +60,7 @@ inline T absolute_error (const T& l, const T& r)
 	return std::abs(l - r);
 }
 
-template <typename T, typename std::enable_if<!types::is_complex<T>::value>::type* = nullptr>
+template <typename T, typename std::enable_if<!cisab::types::is_complex<T>::value>::type* = nullptr>
 inline T relative_error (const T& l, const T& r)
 {
 	return std::abs(l - r) / (
@@ -120,7 +124,7 @@ inline ClosenessF<T> bestcase_close (T thresh)
 
 template <typename IT>
 inline bool vector_close (IT lbegin, IT lend, IT rbegin,
-	const ClosenessF<types::IterValT<IT>>& close_fnc)
+	const ClosenessF<cisab::types::IterValT<IT>>& close_fnc)
 {
 	bool close = true;
 	for (; lbegin != lend && close; ++lbegin, ++rbegin)
@@ -132,22 +136,22 @@ inline bool vector_close (IT lbegin, IT lend, IT rbegin,
 
 #define _ARRCHECK(ARR, ARR2, GBOOL) {\
 	GBOOL(std::equal(ARR.begin(), ARR.end(), ARR2.begin())) <<\
-		"expect list " << fmts::readable(ARR) <<\
-		", got " << fmts::readable(ARR2) << " instead"; }
+		"expect list " << cisab::fmts::readable(ARR) <<\
+		", got " << cisab::fmts::readable(ARR2) << " instead"; }
 #define _VECCHECK(VEC, VEC2, GBOOL) {\
 	GBOOL(VEC.size() == VEC2.size() &&\
 		std::equal(VEC.begin(), VEC.end(), VEC2.begin())) <<\
-		"expect list " << fmts::readable(VEC) <<\
-		", got " << fmts::readable(VEC2) << " instead"; }
+		"expect list " << cisab::fmts::readable(VEC) <<\
+		", got " << cisab::fmts::readable(VEC2) << " instead"; }
 #define _ARRCLOSE(ARR, ARR2, EPS, GBOOL) {\
-	GBOOL(::exam::vector_close(ARR.begin(), ARR.end(), ARR2.begin(), ::exam::abs_close(EPS))) <<\
-		"expect list " << fmts::readable(ARR) <<\
-		", got " << fmts::readable(ARR2) << " instead"; }
+	GBOOL(::verum::exam::vector_close(ARR.begin(), ARR.end(), ARR2.begin(), ::verum::exam::abs_close(EPS))) <<\
+		"expect list " << cisab::fmts::readable(ARR) <<\
+		", got " << cisab::fmts::readable(ARR2) << " instead"; }
 #define _VECCLOSE(VEC, VEC2, EPS, GBOOL) {\
 	GBOOL(VEC.size() == VEC2.size() &&\
-		::exam::vector_close(VEC.begin(), VEC.end(), VEC2.begin(), ::exam::abs_close(EPS))) <<\
-		"expect list " << fmts::readable(VEC) <<\
-		", got " << fmts::readable(VEC2) << " instead"; }
+		::verum::exam::vector_close(VEC.begin(), VEC.end(), VEC2.begin(), ::verum::exam::abs_close(EPS))) <<\
+		"expect list " << cisab::fmts::readable(VEC) <<\
+		", got " << cisab::fmts::readable(VEC2) << " instead"; }
 #define _INSET(SET, CONTENT, GBOOL, PREFIX_MSG) {\
 	GBOOL(SET.end() != SET.find(CONTENT)) <<\
 		PREFIX_MSG << " find " << #CONTENT << " in " << #SET; }
@@ -190,12 +194,12 @@ inline bool vector_close (IT lbegin, IT lend, IT rbegin,
 
 #define EXPECT_FATAL(EVENT, MSG) try { EVENT; FAIL() <<\
 	"did not expect " << #EVENT << " to succeed"; }\
-	catch (exam::TestException& e) { EXPECT_STREQ(MSG, e.what()); }\
+	catch (::verum::exam::TestException& e) { EXPECT_STREQ(MSG, e.what()); }\
 	catch (std::exception& e) { FAIL() << "unexpected throw " << e.what(); }
 
-#define EXPECT_REL_CLOSE(L, R, ERR) EXPECT_LT(exam::relative_error(L, R), ERR)
+#define EXPECT_REL_CLOSE(L, R, ERR) EXPECT_LT(::verum::exam::relative_error(L, R), ERR)
 
-#define EXPECT_NOT_REL_CLOSE(L, R, ERR) EXPECT_GE(exam::relative_error(L, R), ERR)
+#define EXPECT_NOT_REL_CLOSE(L, R, ERR) EXPECT_GE(::verum::exam::relative_error(L, R), ERR)
 
 #define EXPECT_CLOSE(L, R) EXPECT_REL_CLOSE(L, R, 0.02)
 
@@ -203,4 +207,6 @@ inline bool vector_close (IT lbegin, IT lend, IT rbegin,
 
 }
 
-#endif // PKG_EXAM_HPP
+}
+
+#endif // VERUM_EXAM_HPP

@@ -6,8 +6,8 @@
 /// Define test mutator setup
 ///
 
-#ifndef PKG_MUTA_MUTATOR_HPP
-#define PKG_MUTA_MUTATOR_HPP
+#ifndef VERUM_MUTA_MUTATOR_HPP
+#define VERUM_MUTA_MUTATOR_HPP
 
 #include <iostream>
 #include <list>
@@ -23,39 +23,42 @@
 
 #include "gtest/gtest.h"
 
-#include "logs/logs.hpp"
+#include "cisab/logs/logger.h"
 
-#include "muta/random.hpp"
-#include "muta/random_generator.hpp"
-#include "muta/mutator_generator.hpp"
-#include "muta/mutation.grpc.pb.h"
-#include "muta/mutation.pb.h"
+#include "verum/muta/random.h"
+#include "verum/muta/random_generator.h"
+#include "verum/muta/mutator_generator.h"
+#include "verum/muta/mutation.grpc.pb.h"
+#include "verum/muta/mutation.pb.h"
+
+namespace verum
+{
 
 namespace muta
 {
 
 struct ProtobufMutatorEntry final : public iMutatorEntry
 {
-	ProtobufMutatorEntry (MutatorEntry* entry) : entry_(entry) {}
+	ProtobufMutatorEntry (::muta::MutatorEntry* entry) : entry_(entry) {}
 
 	void save (const std::string& s) override
 	{
-		assert(entry_->type() == EntryType::UNSET || entry_->type() == EntryType::STRING);
-		entry_->set_type(EntryType::STRING);
+		assert(entry_->type() == ::muta::EntryType::UNSET || entry_->type() == ::muta::EntryType::STRING);
+		entry_->set_type(::muta::EntryType::STRING);
 		entry_->add_ss(s);
 	}
 
 	void save (const int64_t& i) override
 	{
-		assert(entry_->type() == EntryType::UNSET || entry_->type() == EntryType::INT);
-		entry_->set_type(EntryType::INT);
+		assert(entry_->type() == ::muta::EntryType::UNSET || entry_->type() == ::muta::EntryType::INT);
+		entry_->set_type(::muta::EntryType::INT);
 		entry_->add_is(i);
 	}
 
 	void save (const double& d) override
 	{
-		assert(entry_->type() == EntryType::UNSET || entry_->type() == EntryType::DOUBLE);
-		entry_->set_type(EntryType::DOUBLE);
+		assert(entry_->type() == ::muta::EntryType::UNSET || entry_->type() == ::muta::EntryType::DOUBLE);
+		entry_->set_type(::muta::EntryType::DOUBLE);
 		entry_->add_ds(d);
 	}
 
@@ -63,22 +66,22 @@ struct ProtobufMutatorEntry final : public iMutatorEntry
 	{
 		switch (entry_->type())
 		{
-		case EntryType::STRING:
+		case ::muta::EntryType::STRING:
 			entry_->mutable_ss()->Clear();
 			break;
-		case EntryType::INT:
+		case ::muta::EntryType::INT:
 			entry_->mutable_is()->Clear();
 			break;
-		case EntryType::DOUBLE:
+		case ::muta::EntryType::DOUBLE:
 			entry_->mutable_ds()->Clear();
 			break;
 		default:
 			break;
 		}
-		entry_->set_type(EntryType::UNSET);
+		entry_->set_type(::muta::EntryType::UNSET);
 	}
 
-	MutatorEntry* entry_;
+	::muta::MutatorEntry* entry_;
 };
 
 using PbMutEntryT = std::shared_ptr<ProtobufMutatorEntry>;
@@ -102,7 +105,7 @@ struct ProtobufMutatorSession final
 		return std::make_shared<ProtobufMutatorEntry>(entry);
 	}
 
-	MutatorSession* get_session (void)
+	::muta::MutatorSession* get_session (void)
 	{
 		return &session_;
 	}
@@ -113,7 +116,7 @@ struct ProtobufMutatorSession final
 	}
 
 private:
-	MutatorSession session_;
+	::muta::MutatorSession session_;
 };
 
 static std::string get_envar (const std::string& envar, const std::string& fallback)
@@ -135,7 +138,7 @@ static const int DEADLINE_MS = 200;
 
 static const size_t MIN_SHUFFLE = 5;
 
-using SessSaveF = std::function<grpc::Status(const SaveSessionsRequest&)>;
+using SessSaveF = std::function<grpc::Status(const ::muta::SaveSessionsRequest&)>;
 
 using FailCheckerF = std::function<bool()>;
 
@@ -194,7 +197,7 @@ struct Mutator : public ::testing::Test
 		else if (false == sessions_.back()->has_entry())
 		{
 			auto sess = sessions_.back();
-			logs::warnf("failed session %s has no entry: ignoring...", sess->to_string().c_str());
+			cisab::logs::warnf("failed session %s has no entry: ignoring...", sess->to_string().c_str());
 			sessions_.pop_back();
 		}
 	}
@@ -279,7 +282,7 @@ struct Mutator : public ::testing::Test
 	{
 		if (sessions_.size() > 0)
 		{
-			SaveSessionsRequest request;
+			::muta::SaveSessionsRequest request;
 			for (auto sess : sessions_)
 			{
 				request.add_sessions()->Swap(sess->get_session());
@@ -287,7 +290,7 @@ struct Mutator : public ::testing::Test
 			grpc::Status status = uploader(request);
 			if (false == status.ok())
 			{
-				logs::fatalf("failed to save session to %s: [%d] '%s'",
+				cisab::logs::fatalf("failed to save session to %s: [%d] '%s'",
 					MUTATOR_STORAGE_HOST.c_str(), status.error_code(), status.error_message().c_str());
 			}
 			else
@@ -316,4 +319,6 @@ private:
 
 }
 
-#endif // PKG_MUTA_MUTATOR_HPP
+}
+
+#endif // VERUM_MUTA_MUTATOR_HPP

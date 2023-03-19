@@ -10,6 +10,7 @@ load("@com_grail_bazel_compdb//:aspects.bzl", "compilation_database")
 compilation_database(
     name = "compdb",
     targets = [
-		"//exam:exam",
+		"//verum/exam:exam",
+        "//verum/muta:muta",
     ],
 )

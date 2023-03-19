@@ -8,12 +8,20 @@
 
 #include "gtest/gtest.h"
 
-#include "exam/exam.hpp"
+#include "cisab/logs/logger.h"
+
+#include "verum/exam/macros.h"
+#include "verum/exam/mock_log.h"
+#include "verum/exam/nosupport_log.h"
 
 
 using ::testing::_;
 using ::testing::Return;
 using ::testing::Throw;
+
+using namespace cisab::types;
+using namespace cisab::logs;
+using namespace verum::exam;
 
 
 int main (int argc, char** argv)
@@ -107,17 +115,17 @@ TEST(EXAM, VecEquality)
 
 TEST(EXAM, SetHasality)
 {
-	types::StrMapT<size_t> stuff = {
+	StrMapT<size_t> stuff = {
 		{"abcdef", 123},
 		{"defghi", 456},
 		{"ghijkl", 789},
 	};
 
-	types::StrSetT ssets = {
+	StrSetT ssets = {
 		"abcdef", "defghi", "ghijkl",
 	};
 
-	types::StrUMapT<size_t> ustuff = {
+	StrUMapT<size_t> ustuff = {
 		{"abcdef", 123},
 		{"defghi", 456},
 		{"ghijkl", 789},
@@ -179,38 +187,38 @@ TEST(EXAM, ArrHasality)
 
 TEST(EXAM, Logality)
 {
-	auto tlogger = std::make_shared<exam::MockLogger>();
+	auto tlogger = std::make_shared<MockLogger>();
 
-	logs::set_logger(std::static_pointer_cast<logs::iLogger>(tlogger));
+	set_logger(std::static_pointer_cast<iLogger>(tlogger));
 
 	std::string log_level = "fatal";
 	EXPECT_CALL(*tlogger, set_log_level(log_level)).Times(1);
-	logs::get_logger().set_log_level(log_level);
+	get_logger().set_log_level(log_level);
 	EXPECT_CALL(*tlogger, get_log_level()).Times(1).WillOnce(Return("trace"));
-	EXPECT_STREQ("trace", logs::get_logger().get_log_level().c_str());
+	EXPECT_STREQ("trace", get_logger().get_log_level().c_str());
 
 	auto fatal_action = [tlogger]
 	{
 		std::string fatalmsg = "fatal message";
-		EXPECT_CALL(*tlogger, log(logs::FATAL, fatalmsg, _)).Times(1).WillOnce(Throw(exam::TestException(fatalmsg)));
-		logs::fatal(fatalmsg);
+		EXPECT_CALL(*tlogger, log(FATAL, fatalmsg, _)).Times(1).WillOnce(Throw(TestException(fatalmsg)));
+		fatal(fatalmsg);
 		FAIL() << "fatal should never have gone this far";
 	};
 
 	auto fatal_action2 = [tlogger]
 	{
 		std::string fatalmsg = "fatal message2";
-		EXPECT_CALL(*tlogger, log(logs::FATAL, fatalmsg, _)).Times(1).WillOnce(Throw(exam::TestException(fatalmsg)));
-		logs::get_logger().log(logs::FATAL, fatalmsg);
+		EXPECT_CALL(*tlogger, log(FATAL, fatalmsg, _)).Times(1).WillOnce(Throw(TestException(fatalmsg)));
+		get_logger().log(FATAL, fatalmsg);
 		FAIL() << "fatal should never have gone this far";
 	};
 
 	auto fatal_action3 = [tlogger]
 	{
 		std::string fatalmsg = "fatal message3";
-		EXPECT_CALL(*tlogger, log(logs::FATAL, fatalmsg, _)).Times(1).WillOnce(Throw(exam::TestException(fatalmsg)));
-		logs::get_logger().log(logs::FATAL, fatalmsg);
-		logs::get_logger().log(logs::THROW_ERR, fatalmsg);
+		EXPECT_CALL(*tlogger, log(FATAL, fatalmsg, _)).Times(1).WillOnce(Throw(TestException(fatalmsg)));
+		get_logger().log(FATAL, fatalmsg);
+		get_logger().log(THROW_ERR, fatalmsg);
 		FAIL() << "fatal should never have gone this far";
 	};
 
@@ -218,13 +226,13 @@ TEST(EXAM, Logality)
 	EXPECT_FATAL(fatal_action2(), "fatal message2");
 	EXPECT_FATAL(fatal_action3(), "fatal message3");
 
-	logs::set_logger(nullptr);
+	set_logger(nullptr);
 }
 
 
 TEST(EXAM, NoSupportLog)
 {
-	exam::NoSupportLogger log;
+	NoSupportLogger log;
 	log.set_log_level("123");
 	EXPECT_STREQ("", log.get_log_level().c_str());
 	EXPECT_FALSE(log.supports_level(0));
@@ -283,8 +291,8 @@ TEST(EXAM, ComplexClose)
 
 TEST(EXAM, RelativeErrorFloatPos)
 {
-	auto err = exam::relative_error(1.2f, 1.8f);
-	auto err2 = exam::relative_error(1.8f, 1.5f);
+	auto err = relative_error(1.2f, 1.8f);
+	auto err2 = relative_error(1.8f, 1.5f);
 
 	EXPECT_FLOAT_EQ(1.f/3, err);
 	EXPECT_FLOAT_EQ(1.f/6, err2);
@@ -293,8 +301,8 @@ TEST(EXAM, RelativeErrorFloatPos)
 
 TEST(EXAM, RelativeErrorFloatNeg)
 {
-	auto err = exam::relative_error(-1.5f, -1.8f);
-	auto err2 = exam::relative_error(-1.8f, -1.2f);
+	auto err = relative_error(-1.5f, -1.8f);
+	auto err2 = relative_error(-1.8f, -1.2f);
 
 	EXPECT_FLOAT_EQ(1.f/6, err);
 	EXPECT_FLOAT_EQ(1.f/3, err2);
@@ -305,8 +313,8 @@ TEST(EXAM, RelativeErrorComplex)
 {
 	std::complex<float> a(0.6, -1.2);
 	std::complex<float> b(0.8, -1.8);
-	auto err = exam::relative_error(a, b);
-	auto err2 = exam::relative_error(b, a);
+	auto err = relative_error(a, b);
+	auto err2 = relative_error(b, a);
 
 	EXPECT_FLOAT_EQ(0.3210806, err);
 	EXPECT_FLOAT_EQ(0.3210806, err2);

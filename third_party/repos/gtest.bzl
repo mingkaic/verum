@@ -1,8 +1,10 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 def gtest_repository(name):
+    TAG = "v1.13.0"
+    print("downloading gtest {} from verum".format(TAG))
     git_repository(
         name = name,
         remote = "https://github.com/google/googletest",
-        commit = "3e0e32ba300ce8afe695ad3ba7e81b21b7cf237a",
+        tag = TAG,
     )

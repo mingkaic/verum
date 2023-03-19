@@ -1,9 +1,12 @@
-#ifndef PKG_MUTA_RANDOM_GENERATOR_HPP
-#define PKG_MUTA_RANDOM_GENERATOR_HPP
+#ifndef VERUM_MUTA_RANDOM_GENERATOR_HPP
+#define VERUM_MUTA_RANDOM_GENERATOR_HPP
 
 #include <random>
 
-#include "muta/igenerator.hpp"
+#include "verum/muta/igenerator.h"
+
+namespace verum
+{
 
 namespace muta
 {
@@ -93,4 +96,6 @@ struct RandomGenerator final : public iRandGenerator
 
 }
 
-#endif // PKG_MUTA_RANDOM_GENERATOR_HPP
+}
+
+#endif // VERUM_MUTA_RANDOM_GENERATOR_HPP

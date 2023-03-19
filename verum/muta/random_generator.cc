@@ -1,6 +1,9 @@
-#include "muta/random_generator.hpp"
+#include "verum/muta/random_generator.h"
 
-#ifdef PKG_MUTA_RANDOM_GENERATOR_HPP
+#ifdef VERUM_MUTA_RANDOM_GENERATOR_HPP
+
+namespace verum
+{
 
 namespace muta
 {
@@ -9,6 +12,8 @@ size_t RandomGenerator::string_length_ = 16;
 
 const std::string RandomGenerator::char_set_ =
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+}
 
 }
 

@@ -15,12 +15,12 @@ filegroup(
 
 filegroup(
     name = "muta_hdrs",
-    srcs = glob(["*.hpp"]),
+    srcs = glob(["*.h"]),
 )
 
 filegroup(
     name = "muta_srcs",
-    srcs = glob(["src/*.cpp"]),
+    srcs = glob(["*.cc"]),
 )
 
 filegroup(
@@ -30,7 +30,7 @@ filegroup(
 
 filegroup(
     name = "test_srcs",
-    srcs = glob(["test/*.cpp"]),
+    srcs = glob(["test/*.cc"]),
 )
 
 ######### LIBRARY #########
@@ -39,13 +39,12 @@ cc_library(
     name = "muta",
     hdrs = [":muta_hdrs"],
     srcs = [":muta_srcs"],
-    copts = ["-std=c++17"],
     deps = [
-		":muta_cc_grpc",
-		"@com_github_mingkaic_cisab//logs:logs",
+        ":muta_cc_grpc",
+        "@com_github_mingkaic_cisab//cisab/logs",
         "@com_github_grpc_grpc//:grpc++",
-		"@gtest//:gtest",
-	],
+        "@gtest//:gtest",
+    ],
     visibility = ["//visibility:public"],
 )
 
@@ -63,10 +62,10 @@ cc_proto_library(
 )
 
 cc_grpc_library(
-	name = "muta_cc_grpc",
-	srcs = [":muta_pb"],
-	grpc_only = True,
-	deps = [":muta_cc_pb"],
+    name = "muta_cc_grpc",
+    srcs = [":muta_pb"],
+    grpc_only = True,
+    deps = [":muta_cc_pb"],
     visibility = ["//visibility:public"],
 )
 
@@ -78,8 +77,7 @@ cc_test(
     srcs = [":test_srcs"],
     deps = [
         ":muta",
-		"//exam:exam",
+        "//verum/exam",
     ],
     linkstatic = True,
-    copts = ["-std=c++17"],
 )

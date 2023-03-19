@@ -1,0 +1,17 @@
+licenses(["notice"])
+
+package(
+    default_visibility = ["//visibility:public"],
+)
+
+######### GENERAL SOURCE #########
+
+filegroup(
+    name = "srcs",
+    srcs = [
+        "//verum/exam:srcs",
+        "//verum/muta:srcs",
+		"//verum/muta_io:srcs",
+        "BUILD.bazel",
+    ],
+)

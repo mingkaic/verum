@@ -12,12 +12,12 @@ filegroup(
 
 filegroup(
     name = "exam_hdrs",
-    srcs = glob(["*.hpp"]),
+    srcs = glob(["*.h"]),
 )
 
 filegroup(
     name = "test_srcs",
-    srcs = glob(["test/*.cpp"]),
+    srcs = glob(["test/*.cc"]),
 )
 
 ######### LIBRARY #########
@@ -25,9 +25,8 @@ filegroup(
 cc_library(
     name = "exam",
     hdrs = [":exam_hdrs"],
-    copts = ["-std=c++17"],
     deps = [
-        "@com_github_mingkaic_cisab//logs:logs",
+        "@com_github_mingkaic_cisab//cisab/logs",
         "@gtest//:gtest",
     ],
     visibility = ["//visibility:public"],
@@ -43,5 +42,4 @@ cc_test(
         ":exam",
     ],
     linkstatic = True,
-    copts = ["-std=c++17"],
 )

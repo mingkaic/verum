@@ -7,7 +7,7 @@
 #include <grpcpp/server_builder.h>
 #include <grpcpp/server_context.h>
 
-#include "muta/mutation.grpc.pb.h"
+#include "verum/muta/mutation.grpc.pb.h"
 
 template <typename T>
 static void to_string (std::ostream& out, const google::protobuf::RepeatedField<T>& vec)

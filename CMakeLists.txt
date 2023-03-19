@@ -82,8 +82,8 @@ target_link_libraries(exam INTERFACE ${CONAN_LIBS_CISAB} ${CONAN_LIBS_GTEST})
 
 # muta
 add_library(muta
-    muta/src/mutator.cpp
-    muta/src/random_generator.cpp
+    verum/muta/mutator.cc
+    verum/muta/random_generator.cc
     $<TARGET_OBJECTS:muta_proto_obj>
 )
 target_link_libraries(muta PUBLIC ${CONAN_LIBS_CISAB} ${CONAN_LIBS_GTEST} gRPC::grpc++ gRPC::grpc++_unsecure)
@@ -128,12 +128,12 @@ endif()
 
 # exam
 set(EXAM_TEST exam_test)
-add_executable(${EXAM_TEST} exam/test/main.cpp)
+add_executable(${EXAM_TEST} verum/exam/test/main.cc)
 target_link_libraries(${EXAM_TEST} exam)
 add_test(NAME ${EXAM_TEST} COMMAND ${EXAM_TEST})
 
 # muta
 set(MUTA_TEST muta_test)
-add_executable(${MUTA_TEST} muta/test/main.cpp)
+add_executable(${MUTA_TEST} verum/muta/test/main.cc)
 target_link_libraries(${MUTA_TEST} muta)
 add_test(NAME ${MUTA_TEST} COMMAND ${MUTA_TEST})

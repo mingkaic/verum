@@ -1,13 +1,16 @@
 
-#ifndef PKG_EXAM_NOSUPPORT_HPP
-#define PKG_EXAM_NOSUPPORT_HPP
+#ifndef VERUM_EXAM_NOSUPPORT_HPP
+#define VERUM_EXAM_NOSUPPORT_HPP
 
-#include "logs/logs.hpp"
+#include "cisab/logs/ilogs.h"
+
+namespace verum
+{
 
 namespace exam
 {
 
-struct NoSupportLogger final : public logs::iLogger
+struct NoSupportLogger final : public cisab::logs::iLogger
 {
 	/// Implementation of iLogger
 	std::string get_log_level (void) const override { return ""; }
@@ -22,13 +25,15 @@ struct NoSupportLogger final : public logs::iLogger
 	bool supports_level (const std::string&) const override { return false; }
 
 	/// Implementation of iLogger
-	void log (size_t, const std::string&, const logs::SrcLocT& = logs::SrcLocT::current()) override
+	void log (size_t, const std::string&,
+		const cisab::logs::SrcLocT& = cisab::logs::SrcLocT::current()) override
 	{
 		called_ = true;
 	}
 
 	/// Implementation of iLogger
-	void log (const std::string&, const std::string&, const logs::SrcLocT& = logs::SrcLocT::current()) override
+	void log (const std::string&, const std::string&,
+		const cisab::logs::SrcLocT& = cisab::logs::SrcLocT::current()) override
 	{
 		called_ = true;
 	}
@@ -38,4 +43,6 @@ struct NoSupportLogger final : public logs::iLogger
 
 }
 
-#endif // PKG_EXAM_NOSUPPORT_HPP
+}
+
+#endif // VERUM_EXAM_NOSUPPORT_HPP

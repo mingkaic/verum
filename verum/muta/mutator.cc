@@ -1,14 +1,17 @@
-#include "muta/mutator.hpp"
+#include "verum/muta/mutator.h"
 
-#ifdef PKG_MUTA_MUTATOR_HPP
+#ifdef VERUM_MUTA_MUTATOR_HPP
+
+namespace verum
+{
 
 namespace muta
 {
 
-static grpc::Status grpc_upload (const SaveSessionsRequest& request)
+static grpc::Status grpc_upload (const ::muta::SaveSessionsRequest& request)
 {
 	grpc::ClientContext context;
-	SaveSessionsResponse response;
+	::muta::SaveSessionsResponse response;
 
 	std::chrono::time_point deadline = std::chrono::system_clock::now() +
 		std::chrono::milliseconds(DEADLINE_MS);
@@ -16,7 +19,7 @@ static grpc::Status grpc_upload (const SaveSessionsRequest& request)
 
 	auto channel = grpc::CreateChannel(
 		MUTATOR_STORAGE_HOST, grpc::InsecureChannelCredentials());
-	auto stub = MutationErrorStorage::NewStub(channel);
+	auto stub = ::muta::MutationErrorStorage::NewStub(channel);
 	return stub->SaveSessions(&context, request, &response);
 }
 
@@ -30,6 +33,8 @@ SessSaveF Mutator::exit_saver_ = grpc_upload;
 FailCheckerF Mutator::fail_checker_ = gtest_fail;
 
 RandomGenerator Mutator::generator_;
+
+}
 
 }
 

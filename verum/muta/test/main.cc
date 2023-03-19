@@ -1,6 +1,6 @@
-#include "exam/exam.hpp"
+#include "verum/exam/macros.h"
 
-#include "muta/mutator.hpp"
+#include "verum/muta/mutator.h"
 
 
 static bool trigger_fail = false;
@@ -9,12 +9,12 @@ static bool trigger_fail = false;
 int main (int argc, char** argv)
 {
 	::testing::InitGoogleTest(&argc, argv);
-	muta::Mutator::fail_checker_ = [](){ return trigger_fail; };
+	verum::muta::Mutator::fail_checker_ = [](){ return trigger_fail; };
 	return RUN_ALL_TESTS();
 }
 
 
-struct MUTATOR : public muta::Mutator {};
+struct MUTATOR : public verum::muta::Mutator {};
 
 
 TEST_F(MUTATOR, NoIssue)

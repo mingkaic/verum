@@ -1,5 +1,5 @@
 ///
-/// mutator.hpp
+/// mutator.h
 /// muta
 ///
 /// Purpose:

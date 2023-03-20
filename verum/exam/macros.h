@@ -1,5 +1,5 @@
 ///
-/// macros.hpp
+/// macros.h
 /// exam
 ///
 /// Purpose:

@@ -91,15 +91,15 @@ target_link_libraries(muta PUBLIC ${CONAN_LIBS_CISAB} ${CONAN_LIBS_GTEST} gRPC::
 #### install ####
 if(verum_INSTALL)
     foreach(_HDR
-        exam/exam.hpp
-        exam/macros.hpp
-        exam/mock_log.hpp
-        exam/nosupport_log.hpp
-        muta/igenerator.hpp
-        muta/mutator.hpp
-        muta/mutator_generator.hpp
-        muta/random.hpp
-        muta/random_generator.hpp
+        exam/exam.h
+        exam/macros.h
+        exam/mock_log.h
+        exam/nosupport_log.h
+        muta/igenerator.h
+        muta/mutator.h
+        muta/mutator_generator.h
+        muta/random.h
+        muta/random_generator.h
     )
         get_filename_component(_PATH ${_HDR} PATH)
         install(FILES ${_HDR} DESTINATION "${verum_INSTALL_INCLUDEDIR}/${_PATH}")

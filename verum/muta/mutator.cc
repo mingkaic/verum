@@ -1,6 +1,6 @@
 #include "verum/muta/mutator.h"
 
-#ifdef VERUM_MUTA_MUTATOR_HPP
+#ifdef VERUM_MUTA_MUTATOR_H
 
 namespace verum
 {

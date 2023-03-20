@@ -1,7 +1,7 @@
 #include "verum/muta/igenerator.h"
 
-#ifndef VERUM_MUTA_RANDOM_HPP
-#define VERUM_MUTA_RANDOM_HPP
+#ifndef VERUM_MUTA_RANDOM_H
+#define VERUM_MUTA_RANDOM_H
 
 namespace verum
 {
@@ -32,4 +32,4 @@ IT fisher_yates_shuffle (IT begin, IT end, size_t m, iGenerator& generator)
 
 }
 
-#endif // VERUM_MUTA_RANDOM_HPP
+#endif // VERUM_MUTA_RANDOM_H

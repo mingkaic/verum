@@ -6,8 +6,8 @@
 /// Define test mutator setup
 ///
 
-#ifndef VERUM_MUTA_MUTATOR_HPP
-#define VERUM_MUTA_MUTATOR_HPP
+#ifndef VERUM_MUTA_MUTATOR_H
+#define VERUM_MUTA_MUTATOR_H
 
 #include <iostream>
 #include <list>
@@ -321,4 +321,4 @@ private:
 
 }
 
-#endif // VERUM_MUTA_MUTATOR_HPP
+#endif // VERUM_MUTA_MUTATOR_H

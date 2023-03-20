@@ -1,5 +1,5 @@
-#ifndef VERUM_MUTA_IGENERATOR_HPP
-#define VERUM_MUTA_IGENERATOR_HPP
+#ifndef VERUM_MUTA_IGENERATOR_H
+#define VERUM_MUTA_IGENERATOR_H
 
 #include <functional>
 #include <string>
@@ -47,4 +47,4 @@ struct iGenerator
 
 }
 
-#endif // VERUM_MUTA_IGENERATOR_HPP
+#endif // VERUM_MUTA_IGENERATOR_H

@@ -1,5 +1,5 @@
-#ifndef VERUM_MUTA_RANDOM_GENERATOR_HPP
-#define VERUM_MUTA_RANDOM_GENERATOR_HPP
+#ifndef VERUM_MUTA_RANDOM_GENERATOR_H
+#define VERUM_MUTA_RANDOM_GENERATOR_H
 
 #include <random>
 
@@ -98,4 +98,4 @@ struct RandomGenerator final : public iRandGenerator
 
 }
 
-#endif // VERUM_MUTA_RANDOM_GENERATOR_HPP
+#endif // VERUM_MUTA_RANDOM_GENERATOR_H

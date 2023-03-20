@@ -6,8 +6,8 @@
 /// Define test utility macros
 ///
 
-#ifndef VERUM_EXAM_MACROS_HPP
-#define VERUM_EXAM_MACROS_HPP
+#ifndef VERUM_EXAM_MACROS_H
+#define VERUM_EXAM_MACROS_H
 
 #include <limits>
 #include <type_traits>
@@ -209,4 +209,4 @@ inline bool vector_close (IT lbegin, IT lend, IT rbegin,
 
 }
 
-#endif // VERUM_EXAM_HPP
+#endif // VERUM_EXAM_H

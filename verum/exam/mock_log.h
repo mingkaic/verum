@@ -1,6 +1,6 @@
 
-#ifndef VERUM_EXAM_MOCK_LOG_HPP
-#define VERUM_EXAM_MOCK_LOG_HPP
+#ifndef VERUM_EXAM_MOCK_LOG_H
+#define VERUM_EXAM_MOCK_LOG_H
 
 #include "gmock/gmock.h"
 
@@ -31,4 +31,4 @@ struct MockLogger final : public cisab::logs::iLogger
 
 }
 
-#endif // VERUM_EXAM_MOCK_LOG_HPP
+#endif // VERUM_EXAM_MOCK_LOG_H

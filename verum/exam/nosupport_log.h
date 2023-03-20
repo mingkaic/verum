@@ -1,6 +1,6 @@
 
-#ifndef VERUM_EXAM_NOSUPPORT_HPP
-#define VERUM_EXAM_NOSUPPORT_HPP
+#ifndef VERUM_EXAM_NOSUPPORT_H
+#define VERUM_EXAM_NOSUPPORT_H
 
 #include "cisab/logs/ilogs.h"
 
@@ -45,4 +45,4 @@ struct NoSupportLogger final : public cisab::logs::iLogger
 
 }
 
-#endif // VERUM_EXAM_NOSUPPORT_HPP
+#endif // VERUM_EXAM_NOSUPPORT_H

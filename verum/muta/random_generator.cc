@@ -1,6 +1,6 @@
 #include "verum/muta/random_generator.h"
 
-#ifdef VERUM_MUTA_RANDOM_GENERATOR_HPP
+#ifdef VERUM_MUTA_RANDOM_GENERATOR_H
 
 namespace verum
 {

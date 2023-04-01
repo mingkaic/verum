@@ -91,7 +91,6 @@ target_link_libraries(muta PUBLIC ${CONAN_LIBS_CISAB} ${CONAN_LIBS_GTEST} gRPC::
 #### install ####
 if(verum_INSTALL)
     foreach(_HDR
-        verum/exam/exam.h
         verum/exam/macros.h
         verum/exam/mock_log.h
         verum/exam/nosupport_log.h

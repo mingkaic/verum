@@ -49,11 +49,11 @@ find_program(_PROTOBUF_PROTOC protoc ${CONAN_BIN_DIRS_PROTOBUF} NO_DEFAULT_PATH)
 set(_GRPC_CPP_PLUGIN_EXECUTABLE $<TARGET_FILE:gRPC::grpc_cpp_plugin>)
 
 # muta
-get_filename_component(MUTA_PROTO "muta/mutation.proto" ABSOLUTE)
-set(MUTA_PROTO_SRCS "${CMAKE_CURRENT_BINARY_DIR}/muta/mutation.pb.cc")
-set(MUTA_PROTO_HDRS "${CMAKE_CURRENT_BINARY_DIR}/muta/mutation.pb.h")
-set(MUTA_GRPC_SRCS "${CMAKE_CURRENT_BINARY_DIR}/muta/mutation.grpc.pb.cc")
-set(MUTA_GRPC_HDRS "${CMAKE_CURRENT_BINARY_DIR}/muta/mutation.grpc.pb.h")
+get_filename_component(MUTA_PROTO "verum/muta/mutation.proto" ABSOLUTE)
+set(MUTA_PROTO_SRCS "${CMAKE_CURRENT_BINARY_DIR}/verum/muta/mutation.pb.cc")
+set(MUTA_PROTO_HDRS "${CMAKE_CURRENT_BINARY_DIR}/verum/muta/mutation.pb.h")
+set(MUTA_GRPC_SRCS "${CMAKE_CURRENT_BINARY_DIR}/verum/muta/mutation.grpc.pb.cc")
+set(MUTA_GRPC_HDRS "${CMAKE_CURRENT_BINARY_DIR}/verum/muta/mutation.grpc.pb.h")
 add_custom_command(
     OUTPUT "${MUTA_PROTO_SRCS}" "${MUTA_PROTO_HDRS}" "${MUTA_GRPC_SRCS}" "${MUTA_GRPC_HDRS}"
     COMMAND ${_PROTOBUF_PROTOC}
@@ -91,15 +91,15 @@ target_link_libraries(muta PUBLIC ${CONAN_LIBS_CISAB} ${CONAN_LIBS_GTEST} gRPC::
 #### install ####
 if(verum_INSTALL)
     foreach(_HDR
-        exam/exam.h
-        exam/macros.h
-        exam/mock_log.h
-        exam/nosupport_log.h
-        muta/igenerator.h
-        muta/mutator.h
-        muta/mutator_generator.h
-        muta/random.h
-        muta/random_generator.h
+        verum/exam/exam.h
+        verum/exam/macros.h
+        verum/exam/mock_log.h
+        verum/exam/nosupport_log.h
+        verum/muta/igenerator.h
+        verum/muta/mutator.h
+        verum/muta/mutator_generator.h
+        verum/muta/random.h
+        verum/muta/random_generator.h
     )
         get_filename_component(_PATH ${_HDR} PATH)
         install(FILES ${_HDR} DESTINATION "${verum_INSTALL_INCLUDEDIR}/${_PATH}")

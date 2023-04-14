@@ -13,7 +13,7 @@ def dependencies(excludes = [], force_includes = []):
         cisab_repository()
 
     if validate("gtest", ignores, force_includes):
-        gtest_repository(name = "gtest")
+        gtest_repository()
 
     if validate("com_github_grpc_grpc", ignores, force_includes):
         grpc_repository()

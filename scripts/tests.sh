@@ -25,6 +25,8 @@ if [ -x "$(command -v free)" ]; then
 	free -m;
 fi
 
+bazel --version;
+
 # ===== Run Gtest =====
 echo "===== TESTS =====";
 

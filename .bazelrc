@@ -10,6 +10,8 @@ build --cxxopt=-std=c++17
 test --cxxopt=-std=c++17
 coverage --cxxopt=-std=c++17
 
+build --host_cxxopt=-std=c++17
+
 # ------ HARDWARE ------
 
 run:safe --jobs=2

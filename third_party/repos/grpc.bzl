@@ -1,7 +1,7 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 def grpc_repository():
-    TAG = "v1.54.0"
+    TAG = "v1.55.1"
     print("downloading grpc {} from verum".format(TAG))
     git_repository(
         name = "com_github_grpc_grpc",
